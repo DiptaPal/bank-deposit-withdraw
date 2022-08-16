@@ -6,10 +6,25 @@ document.getElementById('withdrow-btn').addEventListener('click',function(){
     const newWithdrawAmoutString = withdrawBox.value;
     const newWithdrawAmout = parseFloat(newWithdrawAmoutString);
 
+    const checkWithdraw = onlyNumbers(newWithdrawAmoutString);
+
     //clear the withdraw field
     withdrawBox.value = '';
 
-    if(isNaN(newWithdrawAmout) || (newWithdrawAmout < 0)){
+    if(newWithdrawAmoutString.includes('.') === true){
+        for (let i = 0; i < newWithdrawAmoutString.length; i++) {
+            if(newWithdrawAmoutString[i] === '.'){
+                decimalIndex = i;
+            }
+        }
+    
+        if(isNaN(parseFloat(newWithdrawAmoutString[decimalIndex+1])) === true){
+            alert('Please provite valid input !!!');
+            return;
+        }
+    }
+
+    if(isNaN(newWithdrawAmout) || (newWithdrawAmout < 0) || (checkWithdraw === false)){
         alert('Please provide a valid number');
         return;
     }
@@ -38,6 +53,7 @@ document.getElementById('withdrow-btn').addEventListener('click',function(){
     const totalMoney = previousTotalAmount - newWithdrawAmout;
     //set the total balance
     totalAmount.innerText = totalMoney;
-
-    
 });
+function onlyNumbers(str) {
+    return /^[0-9.]+$/.test(str);
+}

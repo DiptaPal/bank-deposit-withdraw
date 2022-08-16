@@ -6,10 +6,25 @@ document.getElementById('deposit-btn').addEventListener('click',function(){
     const newDepositAmoutString = depositBox.value;
     const newDepositAmout = parseFloat(newDepositAmoutString);
 
+    const checkDeposit = onlyNumbers(newDepositAmoutString);
+
     //clear the deposit field
     depositBox.value = '';
 
-    if(isNaN(newDepositAmout) || (newDepositAmout < 0)){
+    if(newDepositAmoutString.includes('.') === true){
+        for (let i = 0; i < newDepositAmoutString.length; i++) {
+            if(newDepositAmoutString[i] === '.'){
+                decimalIndex = i;
+            }
+        }
+    
+        if(isNaN(parseFloat(newDepositAmoutString[decimalIndex+1])) === true){
+            alert('Please provite valid input !!!');
+            return;
+        }
+    }
+
+    if(isNaN(newDepositAmout) || (newDepositAmout < 0) || (checkDeposit === false)){
         alert('Please provide a valid number');
         return;
     }
@@ -33,3 +48,7 @@ document.getElementById('deposit-btn').addEventListener('click',function(){
     //set the total balance
     totalAmount.innerText = totalMoney;
 });
+
+function onlyNumbers(str) {
+    return /^[0-9.]+$/.test(str);
+}
